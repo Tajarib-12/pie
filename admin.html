@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Problèmes</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: #f3f5f7;
+        }
+
+        header {
+            background: #0b5fa4;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        #list {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 10px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border-left: 6px solid #0b5fa4;
+            transition: 0.2s;
+        }
+
+        .box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .box h3 {
+            margin: 0;
+            color: #0b5fa4;
+            font-size: 22px;
+        }
+
+        .box p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .date {
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .empty {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 20px;
+            color: #666;
+        }
+
+        .type-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 8px;
+            margin-top: 5px;
+            font-size: 13px;
+            color: white;
+        }
+
+        .absence { background: #d9534f; }
+        .pv { background: #f0ad4e; }
+        .formation { background: #5bc0de; }
+        .prof { background: #5cb85c; }
+        .connexion { background: #337ab7; }
+        .autre { background: #555; }
+    </style>
+</head>
+
+<body>
+
+<header>📋 Liste des problèmes signalés</header>
+
+<div id="list"></div>
+
+<script>
+    let data = JSON.parse(localStorage.getItem("problemsList") || "[]");
+    let container = document.getElementById("list");
+
+    if (data.length === 0) {
+        container.innerHTML = `<p class="empty">Aucun problème signalé pour le moment.</p>`;
+    }
+
+    data.forEach(p => {
+        container.innerHTML += `
+            <div class="box">
+                <h3>${p.nom}</h3>
+
+                <p>
+                    <span class="type-tag ${p.type}">
+                        ${p.type.charAt(0).toUpperCase() + p.type.slice(1)}
+                    </span>
+                </p>
+
+                <p><b>Description :</b><br>${p.description}</p>
+
+                <p class="date">🕒 ${p.date}</p>
+            </div>
+        `;
+    });
+</script>
+
+</body>
+</html>
