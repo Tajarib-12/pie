@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problèmes</title>
+    <link rel="stylesheet" href="problems.css">
+</head>
+
+<body>
+    <main>
+        <article>
+            <form id="problemForm">
+                <label for="type-problem">Chosie votre problem :</label>
+                <select id="type-problem" required>
+                    <option value="">-- Sélectionnez --</option>
+                    <option value="absence">Problème d'absence</option>
+                    <option value="pv">Erreur PV</option>
+                    <option value="formation">Formation</option>
+                    <option value="prof">Formateur</option>
+                    <option value="connexion">Connexion</option>
+                    <option value="autre">Autre</option>
+                </select>
+                <label for="problems">Décrivez votre problème :</label>
+                <textarea id="problems" required placeholder="Écrivez votre problème ici..."></textarea>
+
+                <button type="submit">Envoyer</button>
+            </form>
+        </article>
+
+        <!-- POPUP -->
+        <div id="popup">
+            <div class="popup-box">
+                <img src="img/yes-green.png" class="popup-logo">
+                <p>Merci pour votre participation !</p>
+            </div>
+        </div>
+
+        <script>
+            const form = document.getElementById("problemForm");
+            const popup = document.getElementById("popup");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                let type = document.getElementById("type-problem").value;
+                let desc = document.getElementById("problems").value;
+
+                // نجمعو البيانات اللي تخزّلو قبل
+                let nom = localStorage.getItem("nom");
+                let prenom = localStorage.getItem("prenom");
+                let hide = localStorage.getItem("hide") === "true";
+
+                // إنشاء object المشكلة
+                let problem = {
+                    nom: hide ? "Anonyme" : nom + " " + prenom,
+                    type: type,
+                    description: desc,
+                    date: new Date().toLocaleString()
+                };
+
+                // تخزين كلشي ف localStorage
+                let list = JSON.parse(localStorage.getItem("problemsList") || "[]");
+                list.push(problem);
+                localStorage.setItem("problemsList", JSON.stringify(list));
+
+                // popup
+                popup.classList.add("show");
+                form.reset();
+
+                setTimeout(() => {
+                    popup.classList.remove("show");
+                }, 2500);
+            });
+        </script>
+
+
+</body>
+
+</html>
